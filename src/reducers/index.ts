@@ -13,7 +13,13 @@ const reducer = combineReducers({
 // user: UserState;
 // posts: string[];
 // }> | undefined, action: UserReducerActions | AddPostAction) => CombinedState<...>
+
+// Utility
 // 함수 type의 return 값만 뽑아오고 싶을 때는 ReturnType을 사용하면 된다.
+// type RootState = EmptyObject & {
+//   user: UserState;
+//   posts: string[];
+// }
 export type RootState = ReturnType<typeof reducer>
 
 export default reducer

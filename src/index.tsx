@@ -11,7 +11,7 @@ root.render(
   <Provider store={store}>
     <React.StrictMode>
       {/* <App /> */}
-      <AppClass />
+      <AppClass dispatchLogIn={() => {}} />
     </React.StrictMode>
   </Provider>,
 )

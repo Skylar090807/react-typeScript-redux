@@ -51,7 +51,7 @@ const mapStateToProps = (state: RootState) => ({
 }) // reselect 쓰는 경우도 있다.
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  dispatchLogIn: (data: { id: string; password: string }) => dispatch(logIn(data)),
+  // dispatchLogIn: (data: { id: string; password: string }) => dispatch(logIn(data)),
   dispatchLogOut: () => dispatch(logOut()),
 })
 
