@@ -1,5 +1,6 @@
 // redux는 초기 state를 하나로 모아준다.
 import { AnyAction, applyMiddleware, compose, createStore, Dispatch, MiddlewareAPI } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import reducer from '../reducers/index'
 
 // useReducer와 Context API의 createContext를 하나로 합친 것과 같다.
@@ -24,13 +25,12 @@ const firstMiddleware = (store: MiddlewareAPI) => (next: Dispatch<AnyAction>) =>
 }
 
 // redux-thunk
-// yarn add redux-thunk 해줘도 되지만 입력할 코드가 간소하여 타이핑 함.
+// yarn add redux-thunk 로 패키지에 디펜던시 추가 해줘도 되지만 입력할 코드가 간소하여 타이핑 함.
+// typeScript에서 라이브러리는 typing 버전 업이 늦게이뤄져 충돌하는 경우가 많으므로 꼭 패키지 추가해야하는 상황이 아니라면(직접 타이핑할 수 있다면) 굳이 패키지를 추가하지 않는 것이 낫다.
 // action은 객체다. thunk는 action을 비동기적으로 하기 위해 객체인 action을 function으로 바꿔주는 것.
 const thunkMiddleware = (store: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (action: any) => {
   if (typeof action === 'function') {
     //비동기
-    // 세 번째 param action의 type을 AnyAction으로 선언했었다. 그러나 AnyAction은 객체이므로 type 선언을 객체로 해두고 function으로 return하면
-    // 당연히 에러가 발생한다. 때문에 우선 action:any 로 type을 변경해줬다.
     return action(store.dispatch, store.getState)
   }
   return next(action) //동기
@@ -39,13 +39,12 @@ const thunkMiddleware = (store: MiddlewareAPI) => (next: Dispatch<AnyAction>) =>
 // 미들웨어 장착은 enhancer = compose(applyMiddleware)로 한다.
 // enhancer에 삼단 고차 함수로 선언한 미들웨어를 compose(applyMiddleware(firtstMiddleware))와 같이 넣어준다.
 // enhancer를 환경에 따라 구분해서 사용하기. (배포환경이나 dev환경에 따라 구분)
-// const enhancer = process.env.NODE_ENV === 'production' ? compose(applyMiddleware(firstMiddleware, thunkMiddleware)) : ''
-const enhancer = compose(applyMiddleware(firstMiddleware, thunkMiddleware))
+const enhancer =
+  process.env.NODE_ENV === 'production'
+    ? compose(applyMiddleware(firstMiddleware, thunkMiddleware))
+    : composeWithDevTools(applyMiddleware(firstMiddleware, thunkMiddleware))
 
 // enhancer를 createStore에 적용한다.
 const store = createStore(reducer, initialState, enhancer)
 
 export default store
-function composeWithDevTools() {
-  throw new Error('Function not implemented.')
-}
