@@ -1,3 +1,4 @@
+import produce from 'immer'
 import { LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT, UserReducerActions } from './../actions/user'
 
 export interface UserState {
@@ -14,23 +15,35 @@ const initialState: UserState = {
   data: null,
 }
 
+// Immer 사용
+// Immer를 사용하면 불변성을 지키지 않아도 된다.
 const userReducer = (prevState = initialState, action: UserReducerActions) => {
-  switch (action.type) {
-    case LOG_IN_REQUEST:
-    case LOG_IN_SUCCESS:
-    case LOG_IN_FAILURE:
-    case LOG_OUT:
-      return {
-        ...prevState,
-        data: null,
-      }
-
-    default:
-      return prevState
-  }
+  return produce(prevState, (draft) => {
+    switch (action.type) {
+      case LOG_IN_REQUEST:
+        draft.data = null
+        draft.isLoggingIn = true
+        break
+      case LOG_IN_SUCCESS:
+        draft.data = action.data
+        draft.isLoggingIn = false
+        break
+      case LOG_IN_FAILURE:
+        draft.data = null
+        draft.isLoggingIn = false
+        break
+      case LOG_OUT:
+        // immer를 사용하면 ... 전개 연산자로 state를 복사해서 불변성 유지할 필요 없다.
+        // return {
+        //   ...prevState,
+        //   data: null,
+        // }
+        draft.data = null
+        break
+      default:
+        return prevState
+    }
+  })
 }
 
 export default userReducer
-function produce() {
-  throw new Error('Function not implemented.')
-}
