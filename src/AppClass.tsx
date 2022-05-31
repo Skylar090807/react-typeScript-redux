@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { logIn, logOut } from './actions/user'
+import { logIn, logOut, ThunkDispatch } from './actions/user'
 import { RootState } from './reducers'
 import { UserState } from './reducers/user'
 
@@ -30,7 +30,7 @@ class AppClass extends Component<StateProps & DispatchToProps> {
 
   render() {
     const { user } = this.props
-
+    console.log('user', user)
     return (
       <div>
         {user.isLoggingIn ? <div>로그인 중</div> : user.data ? <div>{user.data.nickname}</div> : '로그인 해주세요.'}
@@ -50,8 +50,9 @@ const mapStateToProps = (state: RootState) => ({
   posts: state.posts,
 }) // reselect 쓰는 경우도 있다.
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  // dispatchLogIn: (data: { id: string; password: string }) => dispatch(logIn(data)),
+// actions/user.ts ThunkDispatch import
+const mapDispatchToProps = (dispatch: ThunkDispatch) => ({
+  dispatchLogIn: (data: { id: string; password: string }) => dispatch(logIn(data)),
   dispatchLogOut: () => dispatch(logOut()),
 })
 

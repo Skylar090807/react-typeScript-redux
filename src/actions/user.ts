@@ -55,10 +55,10 @@ export interface LogInAction {
   type: typeof LOG_IN_REQUEST
 }
 
-// MiddleWare Redux-Thunk
+// MiddleWare Redux-Thunk 직접 타이핑.
 // ThunkDispatch 오버로딩 선언.
 // ThunkDispatch가 action을 받을 때 return 값이 있을 수도 있고, 없을 수도 있음을 선언.
-interface ThunkDispatch {
+export interface ThunkDispatch {
   (thunkAction: ThunkDispatch): void
   <A>(action: A): AnyAction
   // 위 두 가지 상황 | 관계 선언
@@ -69,9 +69,11 @@ interface ThunkDispatch {
 type ThunkAction = (dispatch: ThunkDispatch) => void
 // ThunkAction을 return하는 ThunkAction creator
 // 하나의 action에서 여러 가지 dispatch를 하고 싶을 때 thunk를 쓴다.
+// logIn은 Thunk를 사용해 action이 객체가 아닌 함수가 되도록 한다.
 export const logIn = (data: { id: string; password: string }): ThunkAction => {
   return (dispatch) => {
     dispatch(LogInRequest(data))
+
     setTimeout(() => {
       dispatch(
         logInSuccess({
@@ -88,6 +90,7 @@ export interface LogOutAction {
   type: typeof LOG_OUT
 }
 
+// logOut은 일반 action creator
 export const logOut = () => {
   return {
     type: LOG_OUT,
