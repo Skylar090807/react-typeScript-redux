@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
 import { logIn, logOut, ThunkDispatch } from './actions/user'
 import { RootState } from './reducers'
 import { UserState } from './reducers/user'

@@ -1,3 +1,4 @@
+// export default로 되어있으면 {} 없이 import 가능하다.
 import produce from 'immer'
 import { LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT, UserReducerActions } from './../actions/user'
 
