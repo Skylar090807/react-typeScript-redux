@@ -1,8 +1,8 @@
-// redux는 초기 state를 하나로 모아준다.
 import { AnyAction, applyMiddleware, compose, createStore, Dispatch, MiddlewareAPI } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import reducer from '../reducers/index'
 
+// redux는 초기 state를 하나로 모아준다.
 // useReducer와 Context API의 createContext를 하나로 합친 것과 같다.
 const initialState = {
   user: {
